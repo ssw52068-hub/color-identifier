@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Identifier for Colorblind - ML Powered</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Header Section -->
+        <header class="header">
+            <h1>🎨 Color Identifier</h1>
+            <p class="subtitle">ML-based color recognition for colorblind assistance</p>
+            <div class="tech-badges">
+                <span class="badge badge-primary">K-Means Clustering</span>
+                <span class="badge badge-success">Random Forest</span>
+                <span class="badge badge-info">Flask + Python</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Upload Section -->
+            <section id="uploadSection" class="upload-section">
+                <div class="upload-card">
+                    <h2>Select an Image</h2>
+                    
+                    <!-- File Upload -->
+                    <div class="upload-box" id="uploadBox">
+                        <div class="upload-content">
+                            <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <h3>Upload Image</h3>
+                            <p>Click to select or drag & drop</p>
+                            <p class="file-types">Supports: JPG, PNG, JPEG</p>
+                            <input type="file" id="imageInput" accept="image/*" hidden>
+                        </div>
+                    </div>
+
+                    <!-- OR Divider -->
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+
+                    <!-- Camera Capture -->
+                    <div class="camera-section">
+                        <button id="cameraBtn" class="camera-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Use Camera
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading Section -->
+            <section id="loadingSection" class="loading-section" style="display: none;">
+                <div class="loading-card">
+                    <div class="spinner"></div>
+                    <h3>Analyzing Colors...</h3>
+                    <p>Running ML algorithms (K-Means + Random Forest)</p>
+                    <div class="loading-steps">
+                        <div class="step">
+                            <span class="step-icon">1</span>
+                            <span>Preprocessing image</span>
+                        </div>
+                        <div class="step">
+                            <span class="step-icon">2</span>
+                            <span>K-Means clustering</span>
+                        </div>
+                        <div class="step">
+                            <span class="step-icon">3</span>
+                            <span>Random Forest classification</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="results-section" style="display: none;">
+                
+                <!-- Images Comparison -->
+                <div class="images-grid">
+                    <div class="image-card">
+                        <h3>Original Image</h3>
+                        <img id="originalImage" alt="Original" />
+                    </div>
+                    <div class="image-card">
+                        <h3>ML Color Classification</h3>
+                        <img id="segmentedImage" alt="Segmented" />
+                    </div>
+                </div>
+
+                <!-- Detected Colors -->
+                <div class="colors-section">
+                    <h3>Detected Colors</h3>
+                    <div id="colorsList" class="colors-list">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- ML Model Info -->
+                <div class="ml-info-card">
+                    <h3>🤖 ML Model Information</h3>
+                    <div id="modelInfo" class="info-grid">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button id="retryBtn" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Analyze Another Image
+                    </button>
+                    <button id="downloadBtn" class="btn btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Download Results
+                    </button>
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p><strong>Algorithms:</strong> K-Means Clustering (Unsupervised) + Random Forest (Supervised)</p>
+                <p><strong>Training Data:</strong> 1,050 synthetic color samples | 50 color categories</p>
+                <p class="team">Team: ACDT 31조 | Built with Flask + scikit-learn</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
